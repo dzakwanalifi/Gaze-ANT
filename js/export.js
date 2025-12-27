@@ -40,4 +40,10 @@ function generateExportLink(data) {
 	//To create the download link
 	createDownloadLink('summaryDownloadLink',fileName+' - Summary.csv',csvSummary,"Export Summary");
 	createDownloadLink('dataDownloadLink',fileName+' - Data.csv',csvData,"Export Raw Data");
+
+	// Gaze Data Export
+	var gazeCSV = generateGazeCSV();
+	document.getElementById('dataDownload').innerHTML += '<br /><a href="'+dataURI(gazeCSV,'text/plain')+'" download="'+fileName+' - Gaze.csv" target="_blank">Export Gaze Data</a>';
+	
+	stopWebGazer();
 }

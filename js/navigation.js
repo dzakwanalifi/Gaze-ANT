@@ -50,7 +50,7 @@ function calculatePPI() {
 
 function submitForm() {
 	getInputData();
-	pushView('instructionPage1');	
+	pushView('calibrationPage');	
 }
 
 function pushView(viewID) {

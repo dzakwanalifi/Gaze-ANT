@@ -39,7 +39,13 @@ function startTest(blockNumber, inputTrialSet) {
 }
 
 function startTrial() {
+    if (!checkFacePresence()) {
+        alert("Face not detected! Please ensure you are in a well-lit area and facing the camera.");
+        setTimeout(startTrial, 2000); // Retry in 2 seconds
+        return;
+    }
 	trialResults[currentTrial][10] = new Date();							//Start time, for accurate inter-trial times
+	startGazeLogging(currentTrial);
 	stage1();														//Move on to the first screen
 }
 
@@ -52,6 +58,7 @@ function stage1() {
 	trialResults[currentTrial][6] = stage1Time;	//Save the time in the output
 	practiceFeedbackUP.innerHTML = '';
 	practiceFeedbackDOWN.innerHTML = '';
+	recordGaze(currentTrial, 'fixation');
 	}
 
 //Cue
@@ -72,15 +79,18 @@ function stage4() {
 	stage4Timer = startTimer('stage4Callback()',1500);	//Delay 1500ms unless interrupted.  We use the startTimer() function for an interruptable timer.
 	trialResults[currentTrial][11] = new Date();		//Save the current date (for time later)
 	document.onkeydown = stage4Interrupted;				//Set up the interrupt
+	recordGaze(currentTrial, 'targetOnset');
 }
 
 //Timeout
 function stage4Callback() {
+	stopGazeLogging();
 	document.onkeydown = earlyEnd;				//Disable that interrupt so it can't be triggered later
 	trialResults[currentTrial][7] = 1500;	//Failed, so max reation time
 	trialResults[currentTrial][8] = 0;		//No key pressed
 	practiceFeedbackUP.innerHTML = 'Timeout';
 	practiceFeedbackDOWN.innerHTML = 'Timeout';
+	recordGaze(currentTrial, 'timeout');
 	stage5();								//Proceed to next stage immediately
 }
 
@@ -92,6 +102,7 @@ function stage4Interrupted(e) {
 	}
 	//Check if it was a key we care about (left or right arrow)
 	if (e.keyCode == 37) {												//Left Key
+		stopGazeLogging();
 		document.onkeydown = earlyEnd;									//We're in!  Disable interrupt
 		trialResults[currentTrial][7] = interruptTimer(stage4Timer);	//Stop the timer and get the reaction time
 		trialResults[currentTrial][8] = e.keyCode;						//Save the keycode for later
@@ -102,8 +113,10 @@ function stage4Interrupted(e) {
 			practiceFeedbackUP.innerHTML = 'Incorrect';
 			practiceFeedbackDOWN.innerHTML = 'Incorrect';
 		}
+		recordGaze(currentTrial, 'response');
 		stage5();														//Proceed to next stage
 	} else if (e.keyCode == 39) {										//Right Key
+		stopGazeLogging();
 		document.onkeydown = earlyEnd;									//We're in!  Disable interrupt
 		trialResults[currentTrial][7] = interruptTimer(stage4Timer);	//Stop the timer and get the reaction time
 		trialResults[currentTrial][8] = e.keyCode;						//Save the keycode for later
@@ -114,8 +127,10 @@ function stage4Interrupted(e) {
 			practiceFeedbackUP.innerHTML = 'Incorrect';
 			practiceFeedbackDOWN.innerHTML = 'Incorrect';
 		}
+		recordGaze(currentTrial, 'response');
 		stage5();														//Proceed to next stage
 	} else if (e.keyCode == 27) {
+		stopGazeLogging();
 		earlyEnd(e);
 	}
 }

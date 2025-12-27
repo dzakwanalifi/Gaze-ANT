@@ -18,6 +18,8 @@
 	<script src="js/dates.js" type="text/javascript"></script>
 	<script src="js/display.js" type="text/javascript"></script>
 	<script src="js/urlpopulate.js" type="text/javascript"></script>
+	<script src="js/webgazer.js" type="text/javascript"></script>
+	<script src="js/gaze.js" type="text/javascript"></script>
 
 	<script src="config/trialSet.js" type="text/javascript"></script>
 	<script src="config/targetTypes.js" type="text/javascript"></script>
@@ -115,6 +117,42 @@
 			</center>
 			<button class="previousButton" onclick="window.location.reload();" Style="bottom:10px">Reset</button>
 			<button class="nextButton" onclick="submitForm();" Style="bottom:10px">Next</button>
+		</div>
+
+		<div id="calibrationPage" class="instructionsPage" style="visibility:hidden">
+			<style>
+				.calibration-point {
+					width: 20px;
+					height: 20px;
+					background-color: red;
+					border-radius: 50%;
+					position: absolute;
+					cursor: pointer;
+					z-index: 1000;
+				}
+				#calibration-instructions {
+					text-align: center;
+					margin-top: 20px;
+				}
+			</style>
+			<div id="calibration-instructions">
+				<h2>Eye Tracking Calibration</h2>
+				<p>Please follow the points on the screen and click each one 5 times until it turns yellow.</p>
+				<p>Keep your head still and follow with your eyes.</p>
+				<button id="startCalibrationBtn" onclick="initWebGazer();">Start WebGazer</button>
+			</div>
+			<div id="calibration-points-container" style="display:none">
+				<div class="calibration-point" id="pt1" style="top: 20%; left: 20%;"></div>
+				<div class="calibration-point" id="pt2" style="top: 20%; left: 50%;"></div>
+				<div class="calibration-point" id="pt3" style="top: 20%; left: 80%;"></div>
+				<div class="calibration-point" id="pt4" style="top: 50%; left: 20%;"></div>
+				<div class="calibration-point" id="pt5" style="top: 50%; left: 50%;"></div>
+				<div class="calibration-point" id="pt6" style="top: 50%; left: 80%;"></div>
+				<div class="calibration-point" id="pt7" style="top: 80%; left: 20%;"></div>
+				<div class="calibration-point" id="pt8" style="top: 80%; left: 50%;"></div>
+				<div class="calibration-point" id="pt9" style="top: 80%; left: 80%;"></div>
+			</div>
+			<button id="finishCalibrationBtn" class="nextButton" onclick="finishCalibration();" style="display:none">Next</button>
 		</div>
 
 		<div id="instructionPage1" class="instructionsPage" style="visibility:hidden">
