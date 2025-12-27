@@ -77,6 +77,8 @@ This work is licensed under the **Creative Commons Attribution-NonCommercial-Sha
 Any original or modified version must attribute the original work to the following (original) authors, and include a hyperlink to their respective Web sites:
 - **Luke Docksteader** - http://docksteaderluke.com
 - **Kris Scott** - http://krssctt.com
-- **WebGazer.js** - Brown HCI Group
+Eye-tracking integration & PSU research enhancements:
+- **dzakwanalifi** - Lead Developer of Gaze integration
+- **WebGazer.js** - Brown HCI Group (https://webgazer.cs.brown.edu/)
 
 *Modifications (2025): Background gaze logging, Face stability checks, and PSU research metrics.*
