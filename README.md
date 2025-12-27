@@ -1,78 +1,82 @@
 # Gaze-ANT: Gaze-Enhanced Attention Network Test
 
 ## Background
-The Attention Network Test (ANT) was originally developed by Jin Fan and Michael Posner to measure three functional attentional networks: **Alerting, Orienting, and Executive Control**. 
+The Attention Network Test (ANT) was originally developed by **Jin Fan and Michael Posner** to measure three functional attentional networks: **Alerting, Orienting, and Executive Control**. More information can be found at [Fan's website](https://www.sacklerinstitute.org/cornell/assays_and_tools/ant/jin.fan/).
 
-**Gaze-ANT** is an advanced evolution of the **CRSD-ANT** (Centre for Research on Safe Driving), a validated shorter version programmed by [Luke Docksteader](http://docksteaderluke.com) and [Kris Scott](http://krssctt.com/). This 2025 update integrates real-time webcam eye-tracking via **WebGazer.js** to provide deeper neuro-behavioral insights, particularly for research on **Problematic Smartphone Use (PSU)** and **Digital Detox** interventions.
+**Gaze-ANT** is an advanced evolution of the **CRSD-ANT** (Centre for Research on Safe Driving), a validated shorter version (approx. 10 minutes) developed in 2009 by [Luke Docksteader](http://docksteaderluke.com) and [Kris Scott](http://krssctt.com/). 
 
-## Key Research Features
-Unlike traditional behavioral tests, Gaze-ANT captures what happens *between* the stimulus and the response:
+This 2025 update integrates real-time webcam eye-tracking via **WebGazer.js** to provide deeper neuro-behavioral insights, particularly for research on **Problematic Smartphone Use (PSU)** and **Digital Detox** interventions.
+
+## Key Research Features (Gaze-Enhanced)
 - **Continuous Gaze Path**: Logs eye coordinates every 100ms during each trial.
-- **Fixation Stability**: Measures "Attentional Wander" via RMSD metrics during the initial fixation phase.
-- **Inhibition Check**: Detects if the eyes "leak" toward distractors in incongruent trials before a manual response is made.
-- **Face Stability Validation**: Automatically pauses the test if the subject's face is not detected, ensuring high data quality.
+- **Fixation Stability**: Measures "Attentional Wander" via RMSD metrics.
+- **Inhibition Check**: Detects if the eyes "leak" toward distractors in incongruent trials.
+- **Face Stability Validation**: Automatically pauses the test if the subject's face is not detected.
 
-## Installation & Running
-### Requirements
-- **Browser**: Firefox or Chrome (optimized).
-- **Environment**: Due to camera security permissions, this MUST be run over `HTTPS` or `localhost`. 
+## Installation & Usage
+### Running the Software
+Open `index.html` with a modern web browser (Firefox or Chrome recommended). 
+**Note:** Due to camera security permissions, this MUST be run over `HTTPS` or `localhost`. 
 
-### Quick Start
-1. Download or clone this repository.
-2. Open `index.html` in your browser.
-3. Fill in the participant details (ID, Age, etc.).
-4. **Calibration**: Complete the 9-point calibration by clicking each point 5 times. Ensure good lighting and a stable head position.
-5. Click **Next** to start the Practice Block (Block 0).
+### Automated Pre-population (URL Queries)
+You can use URL queries to pre-populate participant fields (ID, Session, Study ID, Group, and Age). 
+Format: `index.html?ID=x&sessionNumber=x&studyID=x&groupID=x&age=x`
+
+| URL Query | Element Name |
+| :--- | :--- |
+| ID | ID |
+| sessionID | Session # |
+| studyID | Study ID |
+| groupID | Group ID |
+| age | Age |
 
 ## Customization
 ### Changing Response Keys
-Under default operation, the **Left** and **Right** arrow keys are used. To change these:
+Default keys are **Left** and **Right** arrows. To change (e.g., to 'E' and 'I'):
 1. Open `js/trial.js`.
-2. Locate `stage4Interrupted` function and update the `e.keyCode`.
+2. In `stage4Interrupted`, change `e.keyCode` (37 for Left, 39 for Right).
 
-### Modifying Test Blocks
+### Adding New Stimulus Images
+1. Use 1:1 aspect ratio PNGs (preferably 100x100px) with transparency.
+2. Create two versions: `NAMELeft.png` and `NAMERight.png`.
+3. Place in `images/targets/`.
+4. Add reference in `config/targetTypes.js`: `var stimList = ["Arrow", "YourNewStimulus"];`
+
+### Modifying the number of test blocks
 1. Open `js/navigation.js`.
 2. Change `var numberOfTestBlocks = 4;` to your desired number of blocks.
 
-## Data Files & Output
-Gaze-ANT generates three distinct CSV files for comprehensive analysis.
-
+## Data Files & Variables
 ### Table 1: Summary Data (`Summary.csv`)
-Aggregated metrics for the three attention networks.
-| Variable | Description |
-| :--- | :--- |
-| **alert** | Alerting Network score (NOCUE – DOUBLE) |
-| **orient** | Orienting Network score (CENTRE – SPATIAL) |
-| **conflict** | Executive Control/Interference score (INCONG – CONG) |
-| **med.all** | Median RT for all correct trials |
-| **pc.all** | Overall Percent Correct |
+| Variable | Description | Formula / Source |
+| :--- | :--- | :--- |
+| **alert** | Alerting Network | NOCUE – DOUBLE |
+| **orient** | Orienting Network | CENTRE – SPATIAL |
+| **conflict** | Executive Control | INCONG – CONG |
+| **med.all** | Overall Median RT | Correct trials (100-1500ms) |
+| **pc.all** | Overall Percent Correct | Overall accuracy |
 
-### Table 2: Behavioral Raw Data (`Data.csv`)
-Trial-by-trial behavioral performance.
+### Table 2: Raw Behavioral Data (`Data.csv`)
 | Variable | Description |
 | :--- | :--- |
+| **block** | 0=practice; 1, 2, 3, 4=test blocks |
 | **CueType** | 1=None, 2=Centre, 3=Double, 4=Spatial |
-| **Congruency** | Congruent vs Incongruent |
-| **RT** | Response Time in milliseconds |
 | **Correct** | 1=Correct, 0=Incorrect/Timeout |
+| **RT** | Response time in milliseconds |
 
 ### Table 3: Gaze Path Data (`Gaze.csv`) - *NEW*
-High-resolution eye-tracking logs.
 | Variable | Description |
 | :--- | :--- |
-| **TrialIndex** | The specific trial number |
-| **Event** | fixation, targetOnset, response, or **streaming** (background path) |
-| **GazeX / GazeY** | Screen coordinates of the eye gaze (in pixels) |
+| **Event** | fixation, targetOnset, response, or **streaming** (100ms path) |
+| **GazeX/Y** | Screen coordinates in pixels |
 | **Timestamp** | Precise system time for synchronization |
 
 ## Attribution & License
-This project is licensed under **Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License**. 
+This work is licensed under the **Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License**. 
 
-Original authors of CRSD-ANT:
+Any original or modified version must attribute the original work to the following (original) authors, and include a hyperlink to their respective Web sites:
 - **Luke Docksteader** - http://docksteaderluke.com
 - **Kris Scott** - http://krssctt.com
+- **WebGazer.js** - Brown HCI Group
 
-Eye-tracking integration:
-- **WebGazer.js** - Brown HCI Group (https://webgazer.cs.brown.edu/)
-
-*Any modified version must attribute the original work to Luke Docksteader and Kris Scott, and include a hyperlink to their respective sites.*
+*Modifications (2025): Background gaze logging, Face stability checks, and PSU research metrics.*
