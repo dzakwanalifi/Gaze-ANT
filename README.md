@@ -1,7 +1,7 @@
-# CRSD-ANT + WebGazer: Gaze-Enhanced Attention Network Test
+# Gaze-ANT: Gaze-Enhanced Attention Network Test
 
 ## Overview
-This project is an enhanced version of the **CRSD-ANT** (Centre for Research on Safe Driving - Attention Network Test), integrated with **WebGazer.js** for real-time webcam-based eye-tracking. It is specifically designed for cognitive research, such as studying **Problematic Smartphone Use (PSU)** and the effects of **Digital Detox** on attentional control.
+This project is an advanced, gaze-enhanced version of the **CRSD-ANT**, integrated with **WebGazer.js** for real-time webcam-based eye-tracking. It is specifically designed for cognitive research, such as studying **Problematic Smartphone Use (PSU)** and the effects of **Digital Detox** on attentional control.
 
 ## Key Enhancements (The "Better" Version)
 This version includes significant technical improvements over the original repo to ensure data quality in clinical and remote research settings:
